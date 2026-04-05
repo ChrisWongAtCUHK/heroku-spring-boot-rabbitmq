@@ -16,6 +16,7 @@ public class RabbitMQController {
   @GetMapping
   public String send(String message) {
     try {
+      // message should not be null
       rabbitTemplate.convertAndSend("exampleQueue", message);
       return rabbitTemplate.getEncoding();
     } catch (Exception ex) {
