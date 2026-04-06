@@ -17,7 +17,7 @@ public class RabbitMQController {
   public String send(String message) {
     try {
       // message should not be null
-      rabbitTemplate.convertAndSend("exampleQueue", message);
+      rabbitTemplate.convertAndSend("tpu.queue", message);
       return rabbitTemplate.getEncoding();
     } catch (Exception ex) {
       return ex.getMessage();

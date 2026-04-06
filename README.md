@@ -1,3 +1,5 @@
+# [建立RabbitMQ & SpringBoot集成環境](https://www.tpisoftware.com/tpu/articleDetails/2116)
+
 # Java Getting Started (Maven)
 
 A barebones Java app, which can easily be deployed to Heroku.
