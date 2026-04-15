@@ -4,7 +4,10 @@
 ```
 curl "http://localhost:5000/rabbitmq/sendUser?name=Chris&msg=HelloJSON"
 ```
-
+# 將現有的結構升級為 Fanout Exchange (廣播模式)
+```
+curl "http://localhost:5000/rabbitmq/sendFanout?name=Chris&msg=HelloEveryone"
+```
 # Java Getting Started (Maven)
 
 A barebones Java app, which can easily be deployed to Heroku.

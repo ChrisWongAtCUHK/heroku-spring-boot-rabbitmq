@@ -7,8 +7,15 @@ import com.rabbitmq.model.UserMessage;
 
 @Component
 public class ReceiveMessageListener {
-  @RabbitListener(queues = "tpu.queue", containerFactory = "rabbitListenerContainerFactory")
-  public void receive(UserMessage userMsg) {
-    System.out.println("成功收到 JSON！用戶：" + userMsg.getName());
+  // 監聽 A 隊列
+  @RabbitListener(queues = "queue.A", containerFactory = "rabbitListenerContainerFactory")
+  public void receiveA(UserMessage userMsg) {
+    System.out.println(" [Receiver A] 收到廣播: " + userMsg.getName());
+  }
+
+  // 監聽 B 隊列
+  @RabbitListener(queues = "queue.B", containerFactory = "rabbitListenerContainerFactory")
+  public void receiveB(UserMessage userMsg) {
+    System.out.println(" [Receiver B] 收到廣播: " + userMsg.getName());
   }
 }

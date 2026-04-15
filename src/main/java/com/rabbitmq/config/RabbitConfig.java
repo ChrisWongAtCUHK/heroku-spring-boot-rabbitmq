@@ -2,8 +2,8 @@ package com.rabbitmq.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -13,9 +13,32 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
+  // 1. 定義 Fanout 交換機
   @Bean
-  public Queue tpuQueue() {
-    return new Queue("tpu.queue");
+  public FanoutExchange fanoutExchange() {
+    return new FanoutExchange("fanout.exchange");
+  }
+
+  // 2. 定義兩個不同的 Queue
+  @Bean
+  public Queue queueA() {
+    return new Queue("queue.A");
+  }
+
+  @Bean
+  public Queue queueB() {
+    return new Queue("queue.B");
+  }
+
+  // 3. 將兩個 Queue 都綁定到同一個 Fanout 交換機
+  @Bean
+  public Binding bindingA(Queue queueA, FanoutExchange fanoutExchange) {
+    return BindingBuilder.bind(queueA).to(fanoutExchange);
+  }
+
+  @Bean
+  public Binding bindingB(Queue queueB, FanoutExchange fanoutExchange) {
+    return BindingBuilder.bind(queueB).to(fanoutExchange);
   }
 
   @Bean
@@ -32,16 +55,4 @@ public class RabbitConfig {
     factory.setMessageConverter(jsonMessageConverter());
     return factory;
   }
-
-  @Bean
-  public TopicExchange myExchange() {
-    return new TopicExchange("my-topic-exchange");
-  }
-
-  @Bean
-  public Binding binding(Queue tpuQueue, TopicExchange myExchange) {
-    // 綁定規則：發送訊息時，Routing Key 只要是以 "tpu." 開頭的都會進入 tpuQueue
-    return BindingBuilder.bind(tpuQueue).to(myExchange).with("tpu.#");
-  }
-
 }
