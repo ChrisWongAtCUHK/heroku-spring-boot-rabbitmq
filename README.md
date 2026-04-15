@@ -35,7 +35,7 @@ mqsend() {
   _input_msg="${1:-QuickTest}"
 
   # 使用 Python 進行 URL Encoding，確保 $input_msg 內的單引號不會破壞命令
-  _encoded_msg=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$_input_msg")
+  _encoded_msg=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.stdin.read().strip()))" <<< "$_input_msg")
 
   # 取得 Heroku URL 並移除結尾斜槓以便後續拼接
   _url=$(heroku info -s | grep web_url | cut -d= -f2 | sed 's/\/$//')
