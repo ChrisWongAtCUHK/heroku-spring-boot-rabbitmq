@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rabbitmq.model.UserMessage;
+
 @RestController
 @RequestMapping("/rabbitmq")
 public class RabbitMQController {
@@ -13,14 +15,10 @@ public class RabbitMQController {
   @Autowired
   private RabbitTemplate rabbitTemplate;
 
-  @GetMapping
-  public String send(String message) {
-    try {
-      // message should not be null
-      rabbitTemplate.convertAndSend("tpu.queue", message);
-      return rabbitTemplate.getEncoding();
-    } catch (Exception ex) {
-      return ex.getMessage();
-    }
+  @GetMapping("/sendUser")
+  public String sendUser(String name, String msg) {
+    UserMessage userMsg = new UserMessage(name, msg);
+    rabbitTemplate.convertAndSend("tpu.queue", userMsg);
+    return "JSON Message Sent!";
   }
 }
