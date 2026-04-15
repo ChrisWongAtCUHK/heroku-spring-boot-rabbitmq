@@ -29,11 +29,31 @@ curl "$(heroku info -s | grep web_url | cut -d= -f2)rabbitmq/sendTopic?routingKe
 unalias mqsend 2>/dev/null
 ```
 ```
+# RabbitMQ 發送函數
 mqsend() {
-  # $1 代表你輸入的第一個參數，如果沒輸入則預設為 "QuickTest"
-  local msg="${1:-QuickTest}"
-  local url=$(heroku info -s | grep web_url | cut -d= -f2)
-  
-  curl "${url}rabbitmq/sendTopic?routingKey=hk.news&name=Chris&msg=${msg}"
+  # 若要相容 sh，建議直接使用變數名（不加 local）或改用 bash
+  _input_msg="${1:-QuickTest}"
+
+  # 使用 Python 進行 URL Encoding，確保 $input_msg 內的單引號不會破壞命令
+  _encoded_msg=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$_input_msg")
+
+  # 取得 Heroku URL 並移除結尾斜槓以便後續拼接
+  _url=$(heroku info -s | grep web_url | cut -d= -f2 | sed 's/\/$//')
+
+  if [ -z "$_url" ]; then
+    echo "Error: Could not get Heroku URL."
+    return 1
+  fi
+
+  echo "Sending to Heroku: $_input_msg"
+
+  # 執行 curl 並確保 URL 完整引用
+  curl -s "${_url}/rabbitmq/sendTopic?routingKey=hk.news&name=Chris&msg=${_encoded_msg}"
+
+  echo "\nDone."
 }
+```
+
+```
+mqsend 'abc&123'
 ```
