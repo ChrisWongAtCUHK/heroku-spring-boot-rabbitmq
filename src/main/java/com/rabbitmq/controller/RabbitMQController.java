@@ -15,13 +15,11 @@ public class RabbitMQController {
   @Autowired
   private RabbitTemplate rabbitTemplate;
 
-  @GetMapping("/sendFanout")
-  public String sendFanout(String name, String msg) {
+  @GetMapping("/sendTopic")
+  public String sendTopic(String routingKey, String name, String msg) {
     UserMessage userMsg = new UserMessage(name, msg);
-
-    // 參數：Exchange名稱, RoutingKey(Fanout模式下會被忽略，傳空字串即可), 訊息物件
-    rabbitTemplate.convertAndSend("fanout.exchange", "", userMsg);
-
-    return "Fanout Message Broadcasted!";
+    // 這裡的 routingKey 是關鍵
+    rabbitTemplate.convertAndSend("my.topic.exchange", routingKey, userMsg);
+    return "Topic Message Sent with key: " + routingKey;
   }
 }

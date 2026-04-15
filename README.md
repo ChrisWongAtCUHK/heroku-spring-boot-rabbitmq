@@ -8,6 +8,11 @@ curl "http://localhost:5000/rabbitmq/sendUser?name=Chris&msg=HelloJSON"
 ```
 curl "http://localhost:5000/rabbitmq/sendFanout?name=Chris&msg=HelloEveryone"
 ```
+
+# 模擬一個日誌或新聞系統
+```
+curl "http://localhost:5000/rabbitmq/sendTopic?routingKey=hk.news&name=Chris&msg=HK_News_Update"
+```
 # Java Getting Started (Maven)
 
 A barebones Java app, which can easily be deployed to Heroku.

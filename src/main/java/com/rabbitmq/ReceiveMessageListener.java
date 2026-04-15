@@ -7,15 +7,13 @@ import com.rabbitmq.model.UserMessage;
 
 @Component
 public class ReceiveMessageListener {
-  // 監聽 A 隊列
-  @RabbitListener(queues = "queue.A", containerFactory = "rabbitListenerContainerFactory")
-  public void receiveA(UserMessage userMsg) {
-    System.out.println(" [Receiver A] 收到廣播: " + userMsg.getName());
+  @RabbitListener(queues = "queue.hk", containerFactory = "rabbitListenerContainerFactory")
+  public void receiveHk(UserMessage userMsg) {
+    System.out.println(" [HK Receiver] 收到地區訊息: " + userMsg.getContent());
   }
 
-  // 監聽 B 隊列
-  @RabbitListener(queues = "queue.B", containerFactory = "rabbitListenerContainerFactory")
-  public void receiveB(UserMessage userMsg) {
-    System.out.println(" [Receiver B] 收到廣播: " + userMsg.getName());
+  @RabbitListener(queues = "queue.all.news", containerFactory = "rabbitListenerContainerFactory")
+  public void receiveAllNews(UserMessage userMsg) {
+    System.out.println(" [News Receiver] 收到新聞訊息: " + userMsg.getContent());
   }
 }
