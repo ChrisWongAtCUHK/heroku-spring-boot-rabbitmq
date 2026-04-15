@@ -24,3 +24,16 @@ heroku open
 ```
 curl "$(heroku info -s | grep web_url | cut -d= -f2)rabbitmq/sendTopic?routingKey=hk.news&name=Chris&msg=HK_News_Update"
 ```
+
+```
+unalias mqsend 2>/dev/null
+```
+```
+mqsend() {
+  # $1 代表你輸入的第一個參數，如果沒輸入則預設為 "QuickTest"
+  local msg="${1:-QuickTest}"
+  local url=$(heroku info -s | grep web_url | cut -d= -f2)
+  
+  curl "${url}rabbitmq/sendTopic?routingKey=hk.news&name=Chris&msg=${msg}"
+}
+```
