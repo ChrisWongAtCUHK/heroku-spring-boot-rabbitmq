@@ -18,7 +18,9 @@ public class RabbitMQController {
   @GetMapping("/sendUser")
   public String sendUser(String name, String msg) {
     UserMessage userMsg = new UserMessage(name, msg);
-    rabbitTemplate.convertAndSend("tpu.queue", userMsg);
+    // convertAndSend(交換機名稱, 路由鍵, 訊息物件)
+    rabbitTemplate.convertAndSend("my-topic-exchange", "tpu.important.msg", userMsg);
+
     return "JSON Message Sent!";
   }
 }

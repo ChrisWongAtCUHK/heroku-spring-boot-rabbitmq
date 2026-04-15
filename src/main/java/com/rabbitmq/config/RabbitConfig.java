@@ -1,6 +1,9 @@
 package com.rabbitmq.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -29,4 +32,16 @@ public class RabbitConfig {
     factory.setMessageConverter(jsonMessageConverter());
     return factory;
   }
+
+  @Bean
+  public TopicExchange myExchange() {
+    return new TopicExchange("my-topic-exchange");
+  }
+
+  @Bean
+  public Binding binding(Queue tpuQueue, TopicExchange myExchange) {
+    // 綁定規則：發送訊息時，Routing Key 只要是以 "tpu." 開頭的都會進入 tpuQueue
+    return BindingBuilder.bind(tpuQueue).to(myExchange).with("tpu.#");
+  }
+
 }
