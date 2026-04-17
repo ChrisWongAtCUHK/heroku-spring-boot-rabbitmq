@@ -2,6 +2,7 @@ package com.rabbitmq.controller;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import com.rabbitmq.model.UserMessage;
 
 @RestController
 @RequestMapping("/rabbitmq")
+@CrossOrigin(origins = "*")       // 允許所有來源的跨域請求
 public class RabbitMQController {
 
   @Autowired
