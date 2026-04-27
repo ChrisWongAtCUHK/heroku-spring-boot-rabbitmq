@@ -58,7 +58,7 @@ mqsend() {
 mqsend 'abc&123'
 ```
 
-# Docker
+# Docker on Red Hat Developer
 ## Build
 ```
 docker build -t spring-boot-rabbitmq .
@@ -76,4 +76,11 @@ docker push chriswongatcuhk/spring-boot-rabbitmq
 ```
 docker build --platform linux/amd64 -t chriswongatcuhk/spring-boot-rabbitmq .
 docker push chriswongatcuhk/spring-boot-rabbitmq
+```
+
+## Logs
+Logs 標籤頁也就不會再消失了
+```
+oc get ksvc
+oc patch ksvc spring-boot-rabbitmq --type merge -p '{"spec":{"template":{"metadata":{"annotations":{"autoscaling.knative.dev/minScale":"1"}}}}}'
 ```
