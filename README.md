@@ -57,3 +57,13 @@ mqsend() {
 ```
 mqsend 'abc&123'
 ```
+
+# Docker
+## Build
+```
+docker build -t spring-boot-rabbitmq .
+```
+## Run with environment variable
+```
+docker run -p 8080:8080 -e CLOUDAMQP_URL spring-boot-rabbitmq
+```
