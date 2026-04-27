@@ -67,3 +67,13 @@ docker build -t spring-boot-rabbitmq .
 ```
 docker run -p 8080:8080 -e CLOUDAMQP_URL spring-boot-rabbitmq
 ```
+## Tag and push to Docker Hub
+```
+docker tag spring-boot-rabbitmq chriswongatcuhk/spring-boot-rabbitmq
+docker push chriswongatcuhk/spring-boot-rabbitmq
+```
+## The Fix: Multi-Platform Build
+```
+docker build --platform linux/amd64 -t chriswongatcuhk/spring-boot-rabbitmq .
+docker push chriswongatcuhk/spring-boot-rabbitmq
+```
